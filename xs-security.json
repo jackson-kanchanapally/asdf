@@ -1,0 +1,46 @@
+{
+  "xsappname": "myapp",
+  "tenant-mode": "dedicated",
+  "scopes": [
+    {
+      "name": "myapp.Display",
+      "description": "Display Users"
+    },
+    {
+      "name": "myapp.Update",
+      "description": "Update Users"
+    }
+  ],
+  "role-templates": [
+    {
+      "name": "Viewer",
+      "description": "View Users",
+      "scope-references": [
+        "myapp.Display"
+      ]
+    },
+    {
+      "name": "Manager",
+      "description": "Maintain Users",
+      "scope-references": [
+        "myapp.Display",
+        "myapp.Update"
+      ]
+    }
+  ],
+  "role-collections": [
+    {
+      "name": "UserManagerRC",
+      "description": "User Manager Role Collection",
+      "role-template-references": [
+        "Viewer",
+        "Manager"
+      ]
+    }
+  ],
+  "oauth2-configuration": {
+    "redirect-uris": [
+      "https://*.cfapps.ap21.hana.ondemand.com/**"
+    ]
+  }
+}
