@@ -30,7 +30,7 @@
   ],
   "role-collections": [
     {
-      "name": "UserManagerRC",
+      "name": "UserManagerBC",
       "description": "User Manager Role Collection",
       "role-template-references": [
         "myapp.Viewer",
