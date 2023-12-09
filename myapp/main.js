@@ -4,10 +4,10 @@ const bodyParser = require("body-parser");
 const xsenv = require("@sap/xsenv");
 const JWTStrategy = require("@sap/xssec").JWTStrategy;
 const fs = require("fs");
-const users = require("./users.json");
 const app = express();
 
 const services = xsenv.getServices({ uaa: "nodeuaa" });
+const filePath = "./users.json"; // Define the file path correctly
 
 passport.use(new JWTStrategy(services.uaa));
 
@@ -18,6 +18,7 @@ app.use(passport.authenticate("JWT", { session: false }));
 app.get("/users", function (req, res) {
   var isAuthorized = req.authInfo.checkScope("$XSAPPNAME.Display");
   if (isAuthorized) {
+    const users = require("./users.json");
     res.status(200).json(users);
   } else {
     res.status(403).send("Forbidden");
@@ -30,30 +31,12 @@ app.post("/users", function (req, res) {
     res.status(403).json("Forbidden");
     return;
   }
-
-  var newUser = req.body;
+  const newUser = req.body;
   newUser.id = users.length;
   users.push(newUser);
-  fs.writeFile(users, newUser, (err) => {
-    if (err) {
-      console.error(err);
-    } else {
-      console.log("success.");
-    }
-  });
-  res.status(201).json(newUser);
+  res.status(200).send(users)
 });
-// app.use(express.json())
-// app.get('/users',(req,res)=>{
-//   res.status(200).json(users);
-// })
-// app.post("/users",(req,res)=>{
-//   const name=req.body
-//   name.id=users.length
-//   users.push(name)
-//   res.status(200).json(users)
 
-// })
 const port = process.env.PORT || 3000;
 app.listen(port, function () {
   console.log("myapp listening on port " + port);
