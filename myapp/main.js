@@ -34,6 +34,11 @@ app.post("/users", function (req, res) {
   const newUser = req.body;
   newUser.id = users.length;
   users.push(newUser);
+  fs.writeFile("users.json",JSON.stringify(newUser),err=>{
+    if(err){
+      console.log(err)
+    }
+  })
   res.status(200).send(users)
 });
 
